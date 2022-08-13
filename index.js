@@ -1,7 +1,7 @@
 // REQUIRED CONSTANTS
-const express = require("express");
-const mysql = require("mysql");
+const mysql = require("mysql2");
 const inquirer = require("inquirer");
+const cTable = require("console.table");
 
 // ESTABLISH DATABASE CONNECTION
 const db = mysql.createConnection(
@@ -59,3 +59,8 @@ function menu() {
       }
     });
 }
+
+// FUNCTION FOR VIEW ALL EMPLOYEES
+// function viewAllEmployees() {}
+
+menu();
