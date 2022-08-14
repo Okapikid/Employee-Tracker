@@ -2,7 +2,7 @@
 
 ## Description
 
-This project utilized Node.js, Inquirer, and MySQL to create a content management system as a command-line application to manage a companyy's employee database.<br>
+This project utilized Node.js, Inquirer, and MySQL to create a content management system as a command-line application to manage a company's employee database.<br>
 <br>
 
 ## Table of Contents
