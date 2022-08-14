@@ -27,6 +27,8 @@ Finally, run the app with the command: node index.js
 
 ## Github
 
-The GitHub repository for this project can be found here
+The GitHub repository for this project can be found here: [link to GitHub repository](https://github.com/Okapikid/Employee-Tracker)
 
-Here is a screenshot of the project: ![Password generator with window prompt visible.](./Assets/Images/screenShot.png)
+## Demo
+
+Demo video can be found here: ![Demonstration video](./assets/Employee%20Tracker.mov)

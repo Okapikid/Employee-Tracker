@@ -155,10 +155,41 @@ function viewAllRoles() {
   );
 }
 
+// FUNCTION FOR ADD ROLE
+function addRole() {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "roleToBeAdded",
+        message: "What is the name of the role you would you like to add?",
+      },
+      {
+        type: "input",
+        name: "salaryToBeAdded",
+        message: "What is the salary for the new role?",
+      },
+    ])
+    .then(function (res) {
+      connection.query(
+        "INSERT INTO employeeRole SET ?",
+        {
+          title: res.roleToBeAdded,
+          salary: res.salaryToBeAdded,
+        },
+        function (err) {
+          if (err) throw err;
+          console.table(res);
+          menu();
+        }
+      );
+    });
+}
+
 // FUNCTION FOR VIEW ALL DEPARTMENTS
 function viewAllDepartments() {
   connection.query(
-    "SELECT employee.first_name, employee.last_name, department.name AS Department FROM employee JOIN employeeRole on employee.role_id = employeeRole.id JOIN department ON employeeRole.department_id = department.id;",
+    "SELECT department.id, department.name AS Department from department",
     function (err, res) {
       if (err) throw err;
       console.table(res);
@@ -167,20 +198,20 @@ function viewAllDepartments() {
   );
 }
 
+// FUNCTION TO ADD A DEPARTMENT
 function addDepartment() {
   inquirer
     .prompt([
       {
-        name: "departmentToBeAdded",
         type: "input",
+        name: "departmentToBeAdded",
         message: "What is the name of the department you would like to add?",
-        default: "Add new department",
       },
     ])
     .then((additionalDepartment) => {
       const newDepartment = additionalDepartment.departmentToBeAdded;
       connection.query(
-        "INSERT INTO department(name) VALUES (?)",
+        "INSERT INTO department SET ?",
         newDepartment,
         function addNewDepartment() {
           console.log(`${newDepartment} added to Departments`);
