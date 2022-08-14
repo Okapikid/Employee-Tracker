@@ -61,7 +61,6 @@ function menu() {
 }
 
 // FUNCTION FOR VIEW ALL EMPLOYEES
-// function viewAllEmployees() {}
 function viewAllEmployees() {
   connection.query(
     `SELECT employee.id AS Employee_ID, CONCAT (employee.first_name, " ", employee.last_name) AS Name, employeeRole.title AS Title, department.name AS Department, employeeRole.salary AS Salary, CONCAT (manager.first_name, " ", manager.last_name) AS Manager FROM employee JOIN employeeRole ON employee.role_id = employeeRole.id JOIN department ON employeeRole.department_id = department.id LEFT JOIN employee manager ON manager.id = employee.manager_id ORDER BY employee.id`,
@@ -75,6 +74,7 @@ function viewAllEmployees() {
 
 menu();
 
+// FUNCTION FOR ADD EMPLOYEE
 function addEmployee() {
   inquirer
     .prompt([
@@ -119,6 +119,8 @@ function addEmployee() {
         };
     });
 }
+
+// SELECTIONS FOR CHOOSE ROLE
 const rolesArray = [];
 function chooseRole() {
   connection.query("SELECT * FROM employeeRole", function (err, res) {
@@ -129,6 +131,7 @@ function chooseRole() {
   });
 }
 
+// SLECTIONS FOR CHOOSE MANAGER
 const managersArray = [];
 function chooseManager() {
   connection.query(
@@ -141,4 +144,28 @@ function chooseManager() {
     }
   );
   return managersArray;
+}
+
+// FUNCTION FOR VIEW ALL ROLES
+function viewAllRoles() {
+  connection.query(
+    "SELECT employee.first_name, employee.last_name, employeeRole.title AS Title FROM employee JOIN employeeRole ON employee.role_id = role.id;",
+    function (err, res) {
+      if (err) throw err;
+      console.table(res);
+      menu();
+    }
+  );
+}
+
+// FUNCTION FOR VIEW ALL DEPARTMENTS
+function viewAllDepartments() {
+  connection.query(
+    "SELECT employee.first_name, employee_last_name, department.name AS Department FROM employee JOIN employeeRole on employee.role_id = role.id JOIN department ON employeeRole.department_id = department.id ORDER BY employee.id;",
+    function (err, res) {
+      if (err) throw err;
+      console.table(res);
+      menu();
+    }
+  );
 }
