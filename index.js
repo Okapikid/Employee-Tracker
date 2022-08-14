@@ -134,22 +134,19 @@ function chooseRole() {
 // SLECTIONS FOR CHOOSE MANAGER
 const managersArray = [];
 function chooseManager() {
-  connection.query(
-    "SELECT first_name, last_name FROM employee WHERE manager_id IS NULL",
-    function (err, res) {
-      if (err) throw err;
-      for (let i = 0; i < res.length; i++) {
-        managersArray.push(res[i].first_name);
-      }
+  connection.query("SELECT * FROM employee", function (err, res) {
+    if (err) throw err;
+    for (let i = 0; i < res.length; i++) {
+      managersArray.push(res[i].first_name);
     }
-  );
+  });
   return managersArray;
 }
 
 // FUNCTION FOR VIEW ALL ROLES
 function viewAllRoles() {
   connection.query(
-    "SELECT employee.first_name, employee.last_name, employeeRole.title AS Title FROM employee JOIN employeeRole ON employee.role_id = role.id;",
+    "SELECT employee.first_name, employee.last_name, employeeRole.title AS Title FROM employee JOIN employeeRole ON employee.role_id = employeeRole.id;",
     function (err, res) {
       if (err) throw err;
       console.table(res);
@@ -161,11 +158,34 @@ function viewAllRoles() {
 // FUNCTION FOR VIEW ALL DEPARTMENTS
 function viewAllDepartments() {
   connection.query(
-    "SELECT employee.first_name, employee_last_name, department.name AS Department FROM employee JOIN employeeRole on employee.role_id = role.id JOIN department ON employeeRole.department_id = department.id ORDER BY employee.id;",
+    "SELECT employee.first_name, employee.last_name, department.name AS Department FROM employee JOIN employeeRole on employee.role_id = employeeRole.id JOIN department ON employeeRole.department_id = department.id;",
     function (err, res) {
       if (err) throw err;
       console.table(res);
       menu();
     }
   );
+}
+
+function addDepartment() {
+  inquirer
+    .prompt([
+      {
+        name: "departmentToBeAdded",
+        type: "input",
+        message: "What is the name of the department you would like to add?",
+        default: "Add new department",
+      },
+    ])
+    .then((additionalDepartment) => {
+      const newDepartment = additionalDepartment.departmentToBeAdded;
+      connection.query(
+        "INSERT INTO department(name) VALUES (?)",
+        newDepartment,
+        function addNewDepartment() {
+          console.log(`${newDepartment} added to Departments`);
+          menu();
+        }
+      );
+    });
 }
