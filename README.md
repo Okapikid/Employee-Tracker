@@ -7,13 +7,13 @@ This project utilized Node.js, Inquirer, and MySQL to create a content managemen
 
 ## Table of Contents
 
-- [Installation] (#installation)
+- [Installation](#installation)
 
-- [Usage] (#usage)
+- [Usage](#usage)
 
-- [GitHub] (#github)
+- [GitHub](#github)
 
-- [Demo] (#demo)
+- [Demo](#demo)
 
 ## Installation
 
