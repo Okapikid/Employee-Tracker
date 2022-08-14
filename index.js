@@ -40,7 +40,7 @@ function menu() {
           viewAllEmployees();
           break;
         case "Add Employee":
-          viewAddEmployee();
+          addEmployee();
           break;
         case "Update Employee Role":
           updateEmployeeRole();
@@ -68,8 +68,77 @@ function viewAllEmployees() {
     function (err, res) {
       if (err) throw err;
       console.table(res);
+      menu();
     }
   );
 }
 
 menu();
+
+function addEmployee() {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "addEmployeeFirstName",
+        message: "What is the employee's first name?",
+        default: "firstName",
+      },
+      {
+        type: "input",
+        name: "addEmployeeLastName",
+        message: "What is the employee's last name?",
+        default: "lastName",
+      },
+      {
+        type: "list",
+        name: "addEmployeeRole",
+        message: "What is the employee's role?",
+        choices: chooseRole(),
+      },
+      {
+        type: "list",
+        name: "addEmployeeManager",
+        message: "Who is the employee's manager?",
+        choices: chooseManager(),
+      },
+    ])
+    .then(function (val) {
+      let roleId = chooseRole().indexOf(val.role) + 1;
+      var managerId = chooseManager().indexOf(val.choice) + 1;
+      connection.query("INSERT INTO employee SET"),
+        {
+          first_name: val.firstName,
+          last_name: val.lastName,
+          manager_id: managerId,
+          role_id: roleId,
+        },
+        function (err) {
+          if (err) throw errconsole.table(val);
+          menu();
+        };
+    });
+}
+const rolesArray = [];
+function chooseRole() {
+  connection.query("SELECT * FROM employeeRole", function (err, res) {
+    if (err) throw err;
+    for (let i = 0; i < res.length; i++) {
+      rolesArray.push(res[i].title);
+    }
+  });
+}
+
+const managersArray = [];
+function chooseManager() {
+  connection.query(
+    "SELECT first_name, last_name FROM employee WHERE manager_id IS NULL",
+    function (err, res) {
+      if (err) throw err;
+      for (let i = 0; i < res.length; i++) {
+        managersArray.push(res[i].first_name);
+      }
+    }
+  );
+  return managersArray;
+}
